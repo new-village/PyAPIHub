@@ -5,15 +5,15 @@ FROM python:3.11-slim
 WORKDIR /app
 
 # 必要なライブラリのインストール
-COPY requirements.txt .
-RUN pip install --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
+COPY requirements.txt /app/
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
 # アプリケーションコードのコピー
-COPY main.py main.py
+COPY . /app/
 
 # ポートの指定
-EXPOSE 80
+EXPOSE 8080
 
 # アプリケーションの起動
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
