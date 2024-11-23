@@ -1,3 +1,7 @@
 jpdatetime
 fastapi
 uvicorn
+
+# For developer
+pytest; extra == "dev"
+httpx; extra == "dev"
