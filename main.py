@@ -16,4 +16,14 @@ app.include_router(keiba.router, prefix="/api/keiba", tags=["Keiba"])
 # ルートエンドポイント（オプション）
 @app.get("/")
 def read_root():
-    return {"message": "Welcome to my API"}
+    return {"message": "Welcome to my API"} 
+
+# アプリケーションを起動する関数
+def start():
+    import os
+    import uvicorn
+    port = int(os.getenv("PORT", 8080))
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=False)
+
+if __name__ == "__main__":
+    start()
