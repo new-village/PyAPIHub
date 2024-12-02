@@ -1,4 +1,7 @@
 jpdatetime
+keibascraper
+pandas
+lightgbm
 fastapi
 uvicorn
 

@@ -1,22 +1,24 @@
+# api/endpoints/jpdate.py
 from fastapi import APIRouter, HTTPException
-from app.models.date_input import DateInput
-from app.schemas.date_output import DateOutput
 from jpdatetime import jpdatetime
 
-router = APIRouter(prefix="/jpdate", tags=["jpdate"])
+router = APIRouter()
 
-@router.post("/strptime", response_model=DateOutput)
-async def strptime(date_input: DateInput):
+@router.get("/strptime/{jp_date}")
+async def strptime(jp_date: str):    
     try:
         # 和暦の日付文字列をパース
-        date_obj = jpdatetime.strptime(date_input.date_str, "%G年%m月%d日")
+        date_obj = jpdatetime.strptime(jp_date, "%G年%m月%d日")
         # 西暦の日付文字列に変換
         return {"date_str": date_obj.strftime("%Y-%m-%d")}
     except ValueError:
         raise HTTPException(status_code=400, detail="Invalid Japanese date format")
+    except Exception:
+        # その他の予期しないエラー
+        raise HTTPException(status_code=500, detail="Internal Server Error.")
 
-@router.post("/strftime", response_model=DateOutput)
-async def strftime(date_input: DateInput):
+@router.get("/strftime/{iso_date}")
+async def strptime(iso_date: str):    
     try:
         # 西暦の日付文字列をパース
         date_obj = jpdatetime.strptime(date_input.date_str, "%Y-%m-%d")
@@ -24,3 +26,6 @@ async def strftime(date_input: DateInput):
         return {"date_str": date_obj.strftime("%-G年%m月%d日")}
     except ValueError:
         raise HTTPException(status_code=400, detail="Invalid Gregorian date format")
+    except Exception:
+        # その他の予期しないエラー
+        raise HTTPException(status_code=500, detail="Internal Server Error.")
